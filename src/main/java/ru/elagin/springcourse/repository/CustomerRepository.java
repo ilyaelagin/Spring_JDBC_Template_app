@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CustomerRepository {
+public class CustomerRepository implements Repository<Integer, Customer, CustomerFilter> {
 
     private static final String INDEX_SQL = "SELECT id, tabnum, name, surname, email, birth FROM customers";
     private static final String INDEX_ORDER_BY_SQL = "SELECT id, tabnum, name, surname, email, birth FROM customers ORDER BY id";
@@ -29,11 +29,13 @@ public class CustomerRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<Customer> index() {
 
         return jdbcTemplate.query(INDEX_ORDER_BY_SQL, new BeanPropertyRowMapper<>(Customer.class));
     }
 
+    @Override
     public List<Customer> index(CustomerFilter filter) {
         List<Object> parameters = new ArrayList<>();
         List<String> whereSql = new ArrayList<>();
@@ -44,15 +46,15 @@ public class CustomerRepository {
             parameters.add(filter.getTabnum());
         }
         if (filter.getName() != null) {
-            whereSql.add("name LIKE ?");
+            whereSql.add("name ILIKE ?");
             parameters.add("%" + filter.getName() + "%");
         }
         if (filter.getSurname() != null) {
-            whereSql.add("surname LIKE ?");
+            whereSql.add("surname ILIKE ?");
             parameters.add("%" + filter.getSurname() + "%");
         }
         if (filter.getEmail() != null) {
-            whereSql.add("email LIKE ?");
+            whereSql.add("email ILIKE ?");
             parameters.add("%" + filter.getEmail() + "%");
         }
         if (filter.getBirth() != null) {
@@ -77,25 +79,29 @@ public class CustomerRepository {
         }, new BeanPropertyRowMapper<>(Customer.class));
     }
 
-    public Customer show(int id) {
+    @Override
+    public Customer show(Integer id) {
 
         return jdbcTemplate.query(SHOW_SQL, new BeanPropertyRowMapper<>(Customer.class), id)
                 .stream().findAny().orElse(null);
     }
 
+    @Override
     public void save(Customer customer) {
 
         jdbcTemplate.update(SAVE_SQL, customer.getTabnum(), customer.getName(), customer.getSurname(),
                 customer.getEmail(), customer.getBirth());
     }
 
-    public void update(int id, Customer updatedCustomer) {
+    @Override
+    public void update(Integer id, Customer updatedCustomer) {
 
         jdbcTemplate.update(UPDATE_SQL, updatedCustomer.getTabnum(), updatedCustomer.getName(),
                 updatedCustomer.getSurname(), updatedCustomer.getEmail(), updatedCustomer.getBirth(), id);
     }
 
-    public void delete(int id) {
+    @Override
+    public void delete(Integer id) {
 
         jdbcTemplate.update(DELETE_SQL, id);
     }
