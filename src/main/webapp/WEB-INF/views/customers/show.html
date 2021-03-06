@@ -5,9 +5,6 @@
     <title>Customer</title>
 </head>
 <body>
-<a th:href="@{/customers}">
-    <input type="submit" value="Home"/>
-</a>
 <p th:text="${'ID: ' + customer.getId()}">VALUE</p>
 <p th:text="${'Full name: ' + customer.getName() + ' ' + customer.getSurname()}">VALUE</p>
 <p th:text="${'Email: ' + customer.getEmail()}">VALUE</p>
@@ -21,5 +18,9 @@
 <form th:method="DELETE" th:action="@{/customers/{id}(id=${customer.getId()})}">
     <input type="submit" value="Delete"/>
 </form>
+<br/>
+<a th:href="@{/customers}">
+    <input type="submit" value="Back"/>
+</a>
 </body>
 </html>

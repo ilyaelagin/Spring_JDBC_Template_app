@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.elagin.springcourse.dto.CustomerFilter;
 import ru.elagin.springcourse.models.Customer;
 import ru.elagin.springcourse.repository.CustomerRepository;
 
@@ -14,7 +14,6 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/customers")
 public class CustomersController {
-
     private final CustomerRepository customerRepository;
 
     @Autowired
@@ -23,8 +22,8 @@ public class CustomersController {
     }
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("customers", customerRepository.index());
+    public String index(Model model, @ModelAttribute("customerFilter") @Valid CustomerFilter customerFilter) {
+        model.addAttribute("customers", customerRepository.index(customerFilter));
         return "customers/index";
     }
 

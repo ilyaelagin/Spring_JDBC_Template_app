@@ -2,16 +2,43 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All customers</title>
+    <title>Customers</title>
 </head>
 <body>
 
-<h1>Customers</h1>
-<a href="/customers/new">
-    <input type="submit" value="Create new customer"/>
-</a>
+<h3>Filter</h3>
+
+<form th:method="GET" th:action="@{/customers}" th:object="${customerFilter}">
+    <label for="limit">Enter limit:</label>
+    <input type="number" th:field="*{limit}" id="limit"/>
+    <br>
+    <label for="offset">Enter offset:</label>
+    <input type="number" th:field="*{offset}" id="offset"/>
+    <br/>
+    <label for="tabnum">Enter tabnum:</label>
+    <input type="number" th:field="*{tabnum}" id="tabnum"/>
+    <br>
+    <label for="name">Enter name:</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="surname">Enter surname:</label>
+    <input type="text" th:field="*{surname}" id="surname"/>
+    <br>
+    <label for="email">Enter email:</label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <br/>
+    <label for="birth">Enter birth:</label>
+    <input type="date" th:field="*{birth}" id="birth"/>
+    <br/>
+    <br/>
+    <input type="submit" value="Filter"/>
+</form>
 <br/>
+<a href="/customers">
+    <input type="submit" value="All customers"/>
+</a>
 <hr/>
+
 <table>
     <thead>
     <tr>
@@ -37,6 +64,9 @@
     </tr>
     </tbody>
 </table>
-
+<hr/>
+<a href="/customers/new">
+    <input type="submit" value="Create new customer"/>
+</a>
 </body>
 </html>

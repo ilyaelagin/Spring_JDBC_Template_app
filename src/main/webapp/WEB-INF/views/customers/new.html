@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New Person</title>
+    <title>New Customer</title>
 </head>
 <body>
 
@@ -30,6 +30,10 @@
     <br/>
     <input type="submit" value="Create!"/>
 </form>
+<br/>
+<a th:href="@{/customers}">
+    <input type="submit" value="Back"/>
+</a>
 
 </body>
 </html>
